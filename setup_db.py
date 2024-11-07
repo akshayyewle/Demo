@@ -6,12 +6,12 @@ c = conn.cursor()
 
 # Create Table
 c.execute('''
-    CREATE TABLE IF NOT EXISTS vendors
+    CREATE TABLE vendors
           (
         id INTEGER PRIMARY KEY,
         vendor_name TEXT,
-        regaddressline01 TEXT,
-        regaddress_line02 TEXT
+        regaddress_line01 TEXT,
+        regaddress_line02 TEXT,
         regaddress_line03 TEXT,
         regaddress_city TEXT,
         regaddress_state TEXT,
@@ -20,3 +20,5 @@ c.execute('''
     )
     ''')
 
+conn.commit()
+conn.close()

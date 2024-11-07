@@ -1,3 +1,5 @@
+import sql
+from traitlets import default
 import streamlit as st 
 import os 
 
@@ -8,6 +10,7 @@ st.set_page_config(page_title="Rotork Vendor Data Verification App", page_icon="
 import sqlite3
 conn = sqlite3.connect('vendor_data.db')
 c = conn.cursor()
+conn.close()
 
 # Check if Vendor Database File Exists
 if not os.path.exists('vendor_data.db'):
@@ -58,14 +61,15 @@ else:
     input15 = st.text_input("Country",placeholder="Country",key="input15")
     input16 = st.text_input("Postal Code",placeholder="Postal Code",key="input16")
 
-# Add Submit Button & 
+# Add Submit Button & Insert Data into Database
 if st.button("Submit"):
     # Insert Data into Database
-    c.execute(f''' 
-              INSERT INTO vendor_data (
-                                    vendor_name, 
-                                    regaddress_line_01, regaddress_line_02, regaddress_line_03,
-                                    regaddress_city, regaddress_state, regaddress_country, regaddress_postal_code)
-              VALUES ({input00},{input01}, {input02}, {input03},{input04}, {input05}, {input06}, {input07})
-              ''')
+    query = ''' 
+            INSERT INTO vendors(vendor_name,regaddress_line01,regaddress_line02,regaddress_city, regaddress_state, regaddress_country, regaddress_postal_code)
+            VALUES (?,?,?,?,?,?,?)
+            '''
+    st.write(query,(f'{input00}',f'{input01}',f'{input02}',f'{input04}', f'{input05}', f'{input06}',f'{input07}'))
+    c.execute(query)
+    conn.commit()
+    conn.close()
     st.success("Data Submitted Successfully!")
